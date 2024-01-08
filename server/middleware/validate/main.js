@@ -10,7 +10,9 @@ const validator = (validations) => {
       return next();
     }
 
-    return res.status(400).json({ errors: errors.array() });
+    const error = errors.array();
+
+    return res.status(400).json({ message: error[0].msg });
   };
 };
 
