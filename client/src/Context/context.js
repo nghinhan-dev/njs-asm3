@@ -1,3 +1,7 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 
-export const UserArr = createContext();
+export const User = createContext();
+
+export function useUserContext() {
+  return useContext(User);
+}
