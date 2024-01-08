@@ -11,7 +11,7 @@ exports.signUp = async (req, res) => {
       return res.status(409).send({
         error: "Email already exists",
         message:
-          "The email address provided is already in use. Please use a different email or try logging in.",
+          "Existed email, please use a different email or try logging in.",
       });
     }
 
