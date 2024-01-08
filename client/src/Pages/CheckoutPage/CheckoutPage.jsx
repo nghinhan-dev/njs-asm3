@@ -5,13 +5,8 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 // redux
 import { useSelector } from "react-redux";
-// react
-import { useContext } from "react";
-import { CurrentUserContext } from "../../Context/context";
 
 export default function CheckoutPage() {
-  const { currentUser } = useContext(CurrentUserContext);
-
   const { items: checkoutList, totalPrice } = useSelector(
     (state) => state.cart
   );
@@ -52,7 +47,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   placeholder={"Enter Your Full Name"}
-                  defaultValue={currentUser.fullName}
+                  // defaultValue={currentUser.fullName}
                 />
               </label>
               <label>
@@ -60,7 +55,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   placeholder={"Enter Your Email"}
-                  defaultValue={currentUser.email}
+                  // defaultValue={currentUser.email}
                 />
               </label>
               <label>
@@ -68,7 +63,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   placeholder={"Enter Your Phone Number"}
-                  defaultValue={currentUser.phone}
+                  // defaultValue={currentUser.phone}
                 />
               </label>
               <label>

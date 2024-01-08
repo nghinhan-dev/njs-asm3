@@ -1,7 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
-import { useContext } from "react";
-import { CurrentUserContext } from "../../Context/context";
 import { ToastContainer, toast } from "react-toastify";
 // bootstrap
 import Row from "react-bootstrap/Row";
@@ -14,7 +12,6 @@ import { cartAction } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 
 export default function CartPage() {
-  const { currentUser } = useContext(CurrentUserContext);
   const navigate = useNavigate();
   const { items: cartList, totalPrice } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -144,13 +141,7 @@ export default function CartPage() {
                 <i className="ps-2 fa-solid fa-arrow-left"></i>
                 <p className="px-3">Continue Shopping</p>
               </div>
-              <div
-                onClick={() => {
-                  currentUser !== null && navigate("/checkout");
-                  currentUser === null && toast.warning("Must login first");
-                }}
-                className="d-flex align-items-center justify-content-between"
-              >
+              <div className="d-flex align-items-center justify-content-between">
                 <p className="px-3">Proceed to checkout</p>
                 <i className="pe-2 fa-solid fa-arrow-right"></i>
               </div>

@@ -12,6 +12,7 @@ import LoginPage from "./Pages/LoginPage/LoginPage";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 // loader
 import { loader as rootLoader } from "./utils/loader";
+import { signUp } from "./Pages/LoginPage/action";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <LoginPage />,
+        action: signUp,
       },
       {
         path: "register",

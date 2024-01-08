@@ -5,6 +5,7 @@ import ChatRoom from "./ChatRoom";
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { ToastContainer } from "react-toastify";
 
 export default function Layout() {
   const [isScrolled, setIsScroll] = useState(false);
@@ -28,6 +29,13 @@ export default function Layout() {
 
   return (
     <UserProvider>
+      <ToastContainer
+        position="top-right"
+        hideProgressBar={true}
+        newestOnTop={true}
+        autoClose={700}
+        theme="light"
+      />
       <MyNavbar />
       <Outlet />
       <i
