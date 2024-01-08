@@ -1,17 +1,5 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-const currentUserIndexSlice = createSlice({
-  name: "currentUserIndex",
-  initialState: {
-    index: -1,
-  },
-  reducers: {
-    UPDATE_INDEX(state, action) {
-      state.index = action.payload;
-    },
-  },
-});
-
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
@@ -73,10 +61,8 @@ const cartSlice = createSlice({
 const store = configureStore({
   reducer: {
     cart: cartSlice.reducer,
-    currentUserIndex: currentUserIndexSlice.reducer,
   },
 });
 
 export const cartAction = cartSlice.actions;
-export const currentUserIndexAction = currentUserIndexSlice.actions;
 export default store;
