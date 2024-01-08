@@ -1,4 +1,3 @@
-import { redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export async function signUp({ request }) {
@@ -20,7 +19,7 @@ export async function signUp({ request }) {
     }
 
     toast.success("Account created", { icon: "🥰" });
-    return redirect("/");
+    return res;
   } catch (error) {
     console.log("Something wrong:", error.message);
   }

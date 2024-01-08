@@ -4,6 +4,7 @@ import Col from "react-bootstrap/Col";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useUserContext } from "../Context/context";
 
 export default function MyNavbar() {
   // !!! NavLink from "react-router-dom" NOT from"react-bootstrap"
@@ -11,6 +12,7 @@ export default function MyNavbar() {
   // eslint-disable-next-line no-unused-vars
 
   const [isScrolled, setIsScroll] = useState(false);
+  const { user } = useUserContext();
 
   useEffect(() => {
     function handleScroll() {
@@ -100,8 +102,14 @@ export default function MyNavbar() {
               }}
             >
               <div className="d-flex  align-items-center flex-row ">
-                <i className="fa-solid fa-user pe-1"></i>
-                <p className="d-none d-md-block">Login</p>
+                {user ? (
+                  <p className="d-none d-md-block">Welcome, {user}</p>
+                ) : (
+                  <>
+                    <i className="fa-solid fa-user pe-1"></i>
+                    <p className="d-none d-md-block">Login</p>
+                  </>
+                )}
               </div>
             </NavLink>
           </Col>

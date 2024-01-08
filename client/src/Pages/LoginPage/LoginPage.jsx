@@ -2,11 +2,20 @@
 // redux
 // import { useDispatch, useSelector } from "react-redux";
 // import { cartAction } from "../../store/store";
-import { useState } from "react";
-import { Form } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Form, useActionData } from "react-router-dom";
+import { useUserContext } from "../../Context/context";
 
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(false);
+  const { setUser } = useUserContext();
+  const actionData = useActionData();
+
+  useEffect(() => {
+    if (actionData.userName) {
+      setUser(() => actionData.userName);
+    }
+  }, [actionData, setUser]);
 
   // const dispatch = useDispatch();
   // const cart = useSelector((state) => state.cart);
@@ -52,7 +61,7 @@ export default function LoginPage() {
                   <input
                     type="tel"
                     id="phone"
-                    name="phone"
+                    name="phoneNumber"
                     placeholder="Phone"
                   />
                 </>
