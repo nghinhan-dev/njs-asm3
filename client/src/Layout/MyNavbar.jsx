@@ -12,7 +12,23 @@ export default function MyNavbar() {
   // eslint-disable-next-line no-unused-vars
 
   const [isScrolled, setIsScroll] = useState(false);
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
+
+  const logOut = async () => {
+    const res = await fetch("http://localhost:5000/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    console.log(res);
+
+    if (res.ok) {
+      setUser(null);
+    }
+  };
 
   useEffect(() => {
     function handleScroll() {
@@ -102,12 +118,19 @@ export default function MyNavbar() {
               }}
             >
               <div className="d-flex  align-items-center flex-row ">
-                {user ? (
-                  <p className="d-none d-md-block">Welcome, {user}</p>
-                ) : (
+                {user === null ? (
                   <>
                     <i className="fa-solid fa-user pe-1"></i>
                     <p className="d-none d-md-block">Login</p>
+                  </>
+                ) : (
+                  <>
+                    <p className="d-none d-md-block">Welcome, {user}</p>
+                    <i
+                      style={{ color: "#dfb44f" }}
+                      className="fa-solid fa-arrow-right-from-bracket icon-logout"
+                      onClick={logOut}
+                    ></i>
                   </>
                 )}
               </div>

@@ -7,7 +7,7 @@ import { User } from "./context";
 export default function UserProvider({ children }) {
   // const dispatch = useDispatch();
 
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
 
   return <User.Provider value={{ user, setUser }}>{children}</User.Provider>;
 }
