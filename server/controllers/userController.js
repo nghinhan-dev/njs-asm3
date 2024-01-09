@@ -27,10 +27,37 @@ exports.signUp = async (req, res) => {
 
     await newUser.save();
 
-    return res
-      .status(201)
-      .send({ statusText: "Create sucessfully", userName: userName });
+    return res.status(201).send({ result: "Create sucessfully" });
   } catch (error) {
     console.log(error);
   }
+};
+
+exports.login = async (req, res) => {
+  const { userName, password } = req.body;
+
+  const user = await User.find({ userName: userName });
+
+  if (user.length === 0) {
+    return res.status(404).send({
+      error: "User not found",
+      message: "Provided username doesn't exist",
+    });
+  }
+
+  const isMatch = bcrypt.compare(password, user[0].password);
+
+  if (!isMatch) {
+    return res.status(401).send({
+      error: "Unauthorized",
+      message: "Incorrect password",
+    });
+  }
+
+  req.session.user = user._id;
+  req.session.save();
+
+  res
+    .status(200)
+    .json({ statusText: "Login sucessfully", userName: user[0].userName });
 };

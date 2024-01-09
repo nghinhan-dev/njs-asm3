@@ -13,4 +13,12 @@ const signUpValidator = () =>
       .withMessage("Passwords do not match"),
   ]);
 
-module.exports = { signUpValidator };
+const loginValidator = () =>
+  validator([
+    body("userName").notEmpty().withMessage("Username is required"),
+    body("password")
+      .isLength({ min: 8 })
+      .withMessage("Password must be at least 8 characters long"),
+  ]);
+
+module.exports = { signUpValidator, loginValidator };
