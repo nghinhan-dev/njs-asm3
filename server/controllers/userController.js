@@ -61,3 +61,10 @@ exports.login = async (req, res) => {
     .status(200)
     .send({ statusText: "Login sucessfully", userName: user[0].userName });
 };
+
+exports.logOut = async (req, res) => {
+  req.session.destroy();
+  console.log(23);
+
+  res.status(200).send("Log out");
+};
