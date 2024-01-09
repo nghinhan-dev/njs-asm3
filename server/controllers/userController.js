@@ -54,10 +54,10 @@ exports.login = async (req, res) => {
     });
   }
 
-  req.session.user = user._id;
+  req.session.user = user[0].userName;
   req.session.save();
 
   res
     .status(200)
-    .json({ statusText: "Login sucessfully", userName: user[0].userName });
+    .send({ statusText: "Login sucessfully", userName: user[0].userName });
 };
