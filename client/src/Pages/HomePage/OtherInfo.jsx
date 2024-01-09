@@ -30,10 +30,11 @@ export default function OtherInfo() {
           <Col className="d-flex align-items-center">
             <label
               className="subscribe-form form-label d-flex align-items-center"
-              htmlFor="email"
+              htmlFor="sub-email"
             >
               <input
                 className="form-control"
+                id="sub-email"
                 type="email"
                 placeholder="Enter your email address"
               />
