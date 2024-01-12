@@ -5,7 +5,10 @@ const session = require("express-session");
 const mongoDBStore = require("connect-mongo");
 
 const { mongooseConnect } = require("./util/connectDB");
+
+// routes
 const userRoutes = require("./routes/user");
+const appRoutes = require("./routes/app");
 
 const app = express();
 
@@ -41,6 +44,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(userRoutes);
+app.use(appRoutes);
 
 mongooseConnect()
   .then(() => {
