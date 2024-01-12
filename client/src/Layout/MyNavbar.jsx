@@ -15,7 +15,7 @@ export default function MyNavbar() {
   const { user, setUser } = useUserContext();
 
   const logOut = async () => {
-    const res = await fetch("http://localhost:5000/logout", {
+    const res = await fetch("http://localhost:5000/user/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
