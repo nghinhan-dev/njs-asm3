@@ -141,7 +141,12 @@ export default function CartPage() {
                 <i className="ps-2 fa-solid fa-arrow-left"></i>
                 <p className="px-3">Continue Shopping</p>
               </div>
-              <div className="d-flex align-items-center justify-content-between">
+              <div
+                onClick={() => {
+                  navigate("/checkout");
+                }}
+                className="d-flex align-items-center justify-content-between"
+              >
                 <p className="px-3">Proceed to checkout</p>
                 <i className="pe-2 fa-solid fa-arrow-right"></i>
               </div>
