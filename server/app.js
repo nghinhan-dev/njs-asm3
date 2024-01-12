@@ -9,6 +9,7 @@ const { mongooseConnect } = require("./util/connectDB");
 // routes
 const userRoutes = require("./routes/user");
 const prdRoutes = require("./routes/product");
+const orderRoutes = require("./routes/order");
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use(
         "mongodb+srv://sillywhale:Q0wfauvCoGydCKuS@funix-sw.v8apyjj.mongodb.net/asm3-ecom?retryWrites=true&w=majority",
       collectionName: "sessions",
     }),
+    cookie: { maxAge: 86400000 },
   })
 );
 
@@ -45,6 +47,7 @@ app.use(function (req, res, next) {
 
 app.use("/user", userRoutes);
 app.use("/product", prdRoutes);
+app.use("/order", orderRoutes);
 
 mongooseConnect()
   .then(() => {
