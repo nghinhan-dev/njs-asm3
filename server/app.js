@@ -8,7 +8,7 @@ const { mongooseConnect } = require("./util/connectDB");
 
 // routes
 const userRoutes = require("./routes/user");
-const appRoutes = require("./routes/app");
+const prdRoutes = require("./routes/product");
 
 const app = express();
 
@@ -43,8 +43,8 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use(userRoutes);
-app.use(appRoutes);
+app.use("/user", userRoutes);
+app.use("/product", prdRoutes);
 
 mongooseConnect()
   .then(() => {
