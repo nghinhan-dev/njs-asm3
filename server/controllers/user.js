@@ -54,7 +54,7 @@ exports.login = async (req, res) => {
     });
   }
 
-  req.session.user = user[0].userName;
+  req.session.user = user[0]._id;
   req.session.save();
 
   res
@@ -64,7 +64,6 @@ exports.login = async (req, res) => {
 
 exports.logOut = async (req, res) => {
   req.session.destroy();
-  console.log(23);
 
   res.status(200).send("Log out");
 };
