@@ -4,7 +4,7 @@ export async function signUp({ request }) {
   const data = Object.fromEntries(await request.formData());
 
   try {
-    const res = await fetch(`http://localhost:5000/${data.intent}`, {
+    const res = await fetch(`http://localhost:5000/user/${data.intent}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
