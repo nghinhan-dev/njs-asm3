@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useRouteLoaderData } from "react-router-dom";
+import { useLoaderData, useRouteLoaderData } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { cartAction } from "../../store/store";
 // bootstrap
@@ -8,31 +8,26 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 // shared component
 import ProductList from "../../Shared/ProductList";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function DetailPage() {
   // react-router-doom
   const data = useRouteLoaderData("root");
-  const param = useParams();
-
   // redux
   const dispatch = useDispatch();
 
-  // get currentItem
-  const [
-    {
-      _id,
-      category,
-      img1,
-      img2,
-      img3,
-      img4,
-      long_desc,
-      name,
-      price,
-      short_desc,
-    },
-  ] = data.filter((item) => item._id.$oid === param.productID);
+  const {
+    _id,
+    category,
+    img1,
+    img2,
+    img3,
+    img4,
+    long_desc,
+    name,
+    price,
+    short_desc,
+  } = useLoaderData();
 
   const [currentImg, setCurrentImg] = useState(img1);
 
@@ -47,7 +42,7 @@ export default function DetailPage() {
   const addCart = () => {
     dispatch(
       cartAction.ADD_CART({
-        id: _id.$oid,
+        id: _id,
         name: name,
         price: price,
         quantity: quantity,
@@ -161,13 +156,6 @@ export default function DetailPage() {
           <ProductList data={data} cate={category} />
         </Row>
       </Container>
-      <ToastContainer
-        position="top-right"
-        hideProgressBar={true}
-        newestOnTop={true}
-        autoClose={700}
-        theme="light"
-      />
     </>
   );
 }

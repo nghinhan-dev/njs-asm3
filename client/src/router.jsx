@@ -13,6 +13,7 @@ import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 // loader
 import { loader as rootLoader } from "./utils/loader";
 import { signUp } from "./Pages/LoginPage/action";
+import { getDetail } from "./Pages/DetailPage/loader";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
       {
         path: "detail/:productID",
         element: <DetailPage />,
+        loader: getDetail,
       },
       {
         path: "cart",

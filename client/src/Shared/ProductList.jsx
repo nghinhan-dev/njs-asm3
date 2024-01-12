@@ -52,8 +52,8 @@ const ProductList = memo(function ProductList({
   const renderProductList = productList.map((item) => {
     return (
       <CartHolder
-        key={item._id.$oid}
-        id={item._id.$oid}
+        key={item._id}
+        id={item._id}
         image={item.img1}
         name={item.name}
         price={item.price}
