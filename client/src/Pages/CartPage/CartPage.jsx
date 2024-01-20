@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 // bootstrap
@@ -10,16 +10,30 @@ import Table from "react-bootstrap/Table";
 import OtherBanner from "../../Shared/OtherBanner";
 import { cartAction } from "../../store/store";
 import { useNavigate } from "react-router-dom";
+import { userApi } from "../../store/services";
 
 export default function CartPage() {
+  const { data, isLoading } = userApi.endpoints.getCart.useQuery();
   const navigate = useNavigate();
-  const { items: cartList, totalPrice } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const couponRef = useRef();
 
-  const renderCartList = cartList.map((item) => {
+  if (isLoading) {
     return (
-      <tr key={item.id}>
+      <>
+        <h1>Loading...</h1>
+      </>
+    );
+  }
+  console.log("data:", data);
+
+  const { items, totalPrice } = data;
+
+  const renderCartList = items.map((itemDetail) => {
+    const { item, quantity } = itemDetail;
+
+    return (
+      <tr key={item._id}>
         <td>
           <img className="img-table" src={item.img1} alt={`${item.name}.jpg`} />
         </td>
@@ -31,12 +45,12 @@ export default function CartPage() {
           <div className="px-3 d-flex align-items-center">
             <i
               onClick={() => {
-                dispatch(cartAction.MINUS_CART(item.id));
+                dispatch(cartAction.MINUS_CART(item._id));
                 toast.success("Minus item", { icon: "➖" });
               }}
               className="fa-solid fa-chevron-left"
             ></i>
-            <p className="px-2">{item.quantity}</p>
+            <p className="px-2">{quantity}</p>
             <i
               onClick={() => {
                 dispatch(
@@ -55,9 +69,9 @@ export default function CartPage() {
           </div>
         </td>
         <td>
-          {(item.quantity * item.price)
+          {(quantity * item.price)
             .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
           VND
         </td>
         <td>

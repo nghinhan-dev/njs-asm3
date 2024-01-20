@@ -1,10 +1,11 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { userApi } from "./services";
 
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
     items: [],
-    totalQuantity: 0,
     totalPrice: 0,
   },
   reducers: {
@@ -58,11 +59,16 @@ const cartSlice = createSlice({
   },
 });
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     cart: cartSlice.reducer,
+    [userApi.reducerPath]: userApi.reducer,
   },
+
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(userApi.middleware),
 });
 
 export const cartAction = cartSlice.actions;
-export default store;
+
+setupListeners(store.dispatch);
