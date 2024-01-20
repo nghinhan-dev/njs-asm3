@@ -10,10 +10,10 @@ import Table from "react-bootstrap/Table";
 import OtherBanner from "../../Shared/OtherBanner";
 import { cartAction } from "../../store/store";
 import { useNavigate } from "react-router-dom";
-import { userApi } from "../../store/services";
+import { useGetCartQuery } from "../../store/services";
 
 export default function CartPage() {
-  const { data, isLoading } = userApi.endpoints.getCart.useQuery();
+  const { data, isLoading } = useGetCartQuery();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const couponRef = useRef();
@@ -25,7 +25,6 @@ export default function CartPage() {
       </>
     );
   }
-  console.log("data:", data);
 
   const { items, totalPrice } = data;
 
@@ -55,7 +54,7 @@ export default function CartPage() {
               onClick={() => {
                 dispatch(
                   cartAction.ADD_CART({
-                    id: item.id,
+                    id: item._id,
                     name: item.name,
                     price: item.price,
                     quantity: 1,

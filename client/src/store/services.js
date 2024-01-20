@@ -12,5 +12,15 @@ export const userApi = createApi({
         credentials: "include",
       }),
     }),
+    updateCart: builder.mutation({
+      query: (body) => ({
+        url: "cart",
+        method: "PUT",
+        body,
+        credentials: "include",
+      }),
+    }),
   }),
 });
+
+export const { useGetCartQuery } = userApi;
