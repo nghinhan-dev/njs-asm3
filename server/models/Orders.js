@@ -7,7 +7,8 @@ const orderSchema = new Schema({
   delivery: String,
   items: [
     {
-      type: mongoose.ObjectId,
+      default: [],
+      type: Schema.Types.ObjectId,
       ref: "Product",
     },
   ],
