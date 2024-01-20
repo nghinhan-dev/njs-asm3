@@ -1,4 +1,5 @@
 const User = require("../models/User");
+
 const bcrypt = require("bcrypt");
 
 exports.signUp = async (req, res) => {
@@ -36,6 +37,12 @@ exports.signUp = async (req, res) => {
 exports.login = async (req, res) => {
   const { userName, password } = req.body;
 
+  if (req.session.isAuth) {
+    return res.status(409).send({
+      error: "Already logged in",
+    });
+  }
+
   const user = await User.find({ userName: userName });
 
   if (user.length === 0) {
@@ -54,10 +61,11 @@ exports.login = async (req, res) => {
     });
   }
 
-  req.session.user = user[0]._id;
+  req.session.userID = user[0]._id;
+  req.session.isAuth = true;
   req.session.save();
 
-  res
+  return res
     .status(200)
     .send({ statusText: "Login sucessfully", userName: user[0].userName });
 };
@@ -66,4 +74,47 @@ exports.logOut = async (req, res) => {
   req.session.destroy();
 
   res.status(200).send("Log out");
+};
+
+exports.updateCart = async (req, res) => {
+  const userID = req.session.userID;
+
+  if (!userID) {
+    return res.status(401).send({ error: "Unauthorized" });
+  }
+
+  try {
+    const user = await User.findById(userID).populate("cart.items.item").exec();
+
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    user.cart = req.body;
+    await user.save();
+
+    res.status(200).send(user);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+};
+
+exports.getCart = async (req, res) => {
+  try {
+    const user = await req.user.populate({
+      path: "cart",
+      populate: {
+        path: "items",
+        populate: {
+          path: "item",
+        },
+      },
+    });
+
+    res.status(200).send(user.cart);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
 };
