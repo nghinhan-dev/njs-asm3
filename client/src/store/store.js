@@ -1,5 +1,4 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/query";
 import { userApi } from "./services";
 
 const cartSlice = createSlice({
@@ -11,44 +10,39 @@ const cartSlice = createSlice({
   reducers: {
     UPDATE_CART(state, action) {
       state.items = action.payload.items;
-      state.totalQuantity = action.payload.totalQuantity;
       state.totalPrice = action.payload.totalPrice;
     },
     ADD_CART(state, action) {
       const newItem = action.payload;
       const existedItemIndex = state.items.findIndex(
-        (item) => item?.id === newItem.id
+        (item) => item?._id === newItem._id
       );
 
       if (existedItemIndex === -1) {
         state.items.push({
-          id: newItem.id,
+          id: newItem._id,
           name: newItem.name,
           price: newItem.price,
           quantity: newItem.quantity,
           img1: newItem.img1,
         });
-        state.totalQuantity += newItem.quantity;
         state.totalPrice += newItem.price * newItem.quantity;
       } else {
         state.items[existedItemIndex].quantity += newItem.quantity;
-        state.totalQuantity += newItem.quantity;
         state.totalPrice += newItem.price * newItem.quantity;
       }
     },
     REMOVE_CART(state, action) {
       const id = action.payload;
-      const removeIndex = state.items.findIndex((item) => item.id === id);
-      state.totalQuantity -= state.items[removeIndex].quantity;
+      const removeIndex = state.items.findIndex((item) => item._id === id);
       state.totalPrice -=
         state.items[removeIndex].quantity * state.items[removeIndex].price;
       state.items.splice(removeIndex, 1);
     },
     MINUS_CART(state, action) {
       const id = action.payload;
-      const minusIndex = state.items.findIndex((item) => item.id === id);
+      const minusIndex = state.items.findIndex((item) => item._id === id);
 
-      state.totalQuantity--;
       state.totalPrice -= state.items[minusIndex].price;
       if (state.items[minusIndex].quantity !== 1) {
         state.items[minusIndex].quantity--;
@@ -70,5 +64,3 @@ export const store = configureStore({
 });
 
 export const cartAction = cartSlice.actions;
-
-setupListeners(store.dispatch);
