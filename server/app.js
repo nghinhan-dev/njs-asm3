@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const mongoDBStore = require("connect-mongo");
 
@@ -14,6 +15,8 @@ const orderRoutes = require("./routes/order");
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cookieParser());
+
 app.use(
   cors({
     origin: ["http://localhost:3000", "http://localhost:3001"],
