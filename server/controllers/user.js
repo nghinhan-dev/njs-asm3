@@ -77,26 +77,34 @@ exports.logOut = async (req, res) => {
 };
 
 exports.updateCart = async (req, res) => {
-  const userID = req.session.userID;
-
-  if (!userID) {
-    return res.status(401).send({ error: "Unauthorized" });
-  }
+  let user = req.user;
 
   try {
-    const user = await User.findById(userID).populate("cart.items.item").exec();
-
-    if (!user) {
-      return res.status(404).send({ error: "User not found" });
-    }
-
     user.cart = req.body;
+
+    user = await req.user.populate({
+      path: "cart",
+      populate: {
+        path: "items",
+        populate: {
+          path: "item",
+        },
+      },
+    });
+
+    let { items, totalPrice } = user.cart;
+    totalPrice = items.reduce((acc, itemDetail) => {
+      let { item, quantity } = itemDetail;
+
+      return acc + item.price * quantity;
+    }, 0);
+
+    user.cart = { ...req.body, totalPrice };
     await user.save();
 
-    res.status(200).send(user);
+    res.status(200).send(user.cart);
   } catch (error) {
     console.error("Error:", error);
-    res.status(500).send({ error: "Internal Server Error" });
   }
 };
 
