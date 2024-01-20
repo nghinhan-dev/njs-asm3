@@ -21,7 +21,8 @@ export default function LoginPage() {
       setUser(() => actionData.userName);
       navigate("/");
     }
-  }, [actionData, setIsLogin, setUser, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [actionData]);
 
   // const dispatch = useDispatch();
   // const cart = useSelector((state) => state.cart);

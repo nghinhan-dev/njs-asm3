@@ -10,7 +10,6 @@ import { ToastContainer } from "react-toastify";
 export default function Layout() {
   const [isScrolled, setIsScroll] = useState(false);
   const [isChat, setIsChat] = useState(true);
-
   useEffect(() => {
     function handleScroll() {
       if (window.scrollY > 50) {
