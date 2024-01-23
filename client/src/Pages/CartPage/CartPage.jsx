@@ -25,7 +25,7 @@ export default function CartPage() {
       try {
         const result = await loginOnLoad();
 
-        if (result.error) {
+        if (result?.error) {
           isMounted && toast.error(result.error);
         }
       } catch (error) {
