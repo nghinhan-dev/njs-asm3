@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 // bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -8,11 +8,37 @@ import Table from "react-bootstrap/Table";
 import OtherBanner from "../../Shared/OtherBanner";
 import { useNavigate } from "react-router-dom";
 import { useGetCartQuery } from "../../store/services";
+import { useUserContext } from "../../Context/context";
+import useLoginOnLoad from "../../utils/loginOnLoad";
 import CartItem from "./CartItem";
+import { toast } from "react-toastify";
 
 export default function CartPage() {
-  const { data, isLoading, isSuccess, isError, error } = useGetCartQuery();
+  const { user } = useUserContext();
   const navigate = useNavigate();
+  const loginOnLoad = useLoginOnLoad();
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const onLoad = async () => {
+      try {
+        const result = await loginOnLoad();
+
+        if (result.error) {
+          isMounted && toast.error(result.error);
+        }
+      } catch (error) {
+        console.log("error:", error);
+      }
+    };
+
+    user === null && onLoad();
+
+    return () => (isMounted = false);
+  }, [user, navigate, loginOnLoad]);
+
+  const { data, isLoading, isSuccess, isError, error } = useGetCartQuery();
   const couponRef = useRef();
 
   let bodyContent;

@@ -70,6 +70,27 @@ exports.login = async (req, res) => {
     .send({ statusText: "Login sucessfully", userName: user[0].userName });
 };
 
+exports.autoLoginWithSesssionCookie = async (req, res) => {
+  try {
+    console.log("session:", req.session);
+    if (req.session.userID) {
+      const user = await User.findById(req.session.userID);
+
+      if (!user) {
+        res.status(404).send("User not found");
+        throw new Error("User not found");
+      }
+
+      res.status(200).send(user);
+    } else {
+      res.status(409).send("Login first");
+      throw new Error("Login first");
+    }
+  } catch (error) {
+    console.error("Error in loginAuth:", error);
+  }
+};
+
 exports.logOut = async (req, res) => {
   req.session.destroy();
 
