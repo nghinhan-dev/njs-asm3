@@ -12,7 +12,7 @@ router.get(
   userController.autoLoginWithSesssionCookie
 );
 router.post("/logout", userController.logOut);
-router.put("/cart", auth.login, userController.updateCart);
+router.patch("/cart", auth.login, userController.updateCart);
 router.get("/cart", auth.login, userController.getCart);
 
 module.exports = router;

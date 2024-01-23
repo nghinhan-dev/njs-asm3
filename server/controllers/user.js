@@ -101,29 +101,18 @@ exports.updateCart = async (req, res) => {
   let user = req.user;
 
   try {
-    user.cart = req.body;
+    const updatedItem = req.body;
+    console.log("updatedItem:", updatedItem);
 
-    user = await req.user.populate({
-      path: "cart",
-      populate: {
-        path: "items",
-        populate: {
-          path: "item",
-        },
-      },
-    });
+    const cartItemIndex = user.cart.items.findIndex(
+      (itemDetail) => itemDetail.item._id.toString() === updatedItem._id
+    );
 
-    let { items, totalPrice } = user.cart;
-    totalPrice = items.reduce((acc, itemDetail) => {
-      let { item, quantity } = itemDetail;
+    user.cart.items[cartItemIndex].quantity = updatedItem.newQuantity;
 
-      return acc + item.price * quantity;
-    }, 0);
-
-    user.cart = { ...req.body, totalPrice };
     await user.save();
 
-    res.status(200).send(user.cart);
+    res.status(200).send(user.cart.items);
   } catch (error) {
     console.error("Error:", error);
   }
