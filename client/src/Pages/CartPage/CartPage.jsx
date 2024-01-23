@@ -1,6 +1,4 @@
-import { useDispatch } from "react-redux";
 import { useRef } from "react";
-import { ToastContainer, toast } from "react-toastify";
 // bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -8,15 +6,17 @@ import Container from "react-bootstrap/Container";
 import Table from "react-bootstrap/Table";
 // shared component
 import OtherBanner from "../../Shared/OtherBanner";
-import { cartAction } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { useGetCartQuery } from "../../store/services";
+import CartItem from "./CartItem";
 
 export default function CartPage() {
-  const { data, isLoading } = useGetCartQuery();
+  const { data, isLoading, isSuccess, isError, error } = useGetCartQuery();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const couponRef = useRef();
+
+  let bodyContent;
+  let subContent;
 
   if (isLoading) {
     return (
@@ -24,67 +24,48 @@ export default function CartPage() {
         <h1>Loading...</h1>
       </>
     );
-  }
+  } else if (isSuccess) {
+    const { items, totalPrice } = data;
 
-  const { items, totalPrice } = data;
+    const renderCartList = items.map((itemDetail) => {
+      const { item, quantity } = itemDetail;
+      return <CartItem key={item._id} item={item} quantity={quantity} />;
+    });
 
-  const renderCartList = items.map((itemDetail) => {
-    const { item, quantity } = itemDetail;
-
-    return (
-      <tr key={item._id}>
-        <td>
-          <img className="img-table" src={item.img1} alt={`${item.name}.jpg`} />
-        </td>
-        <td>{item.name}</td>
-        <td>
-          {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} VND
-        </td>
-        <td>
-          <div className="px-3 d-flex align-items-center">
-            <i
-              onClick={() => {
-                dispatch(cartAction.MINUS_CART(item._id));
-                toast.success("Minus item", { icon: "➖" });
-              }}
-              className="fa-solid fa-chevron-left"
-            ></i>
-            <p className="px-2">{quantity}</p>
-            <i
-              onClick={() => {
-                dispatch(
-                  cartAction.ADD_CART({
-                    id: item._id,
-                    name: item.name,
-                    price: item.price,
-                    quantity: 1,
-                    img1: item.img1,
-                  })
-                );
-                toast.success("Added to cart");
-              }}
-              className="fa-solid fa-chevron-right"
-            ></i>
+    bodyContent = <tbody>{renderCartList}</tbody>;
+    subContent = (
+      <Col md="4" xl="4">
+        <div className="bg-light text-uppercase p-4">
+          <h3 className="mb-3">CART TOTAL</h3>
+          <div className="d-flex align-items-center justify-content-between">
+            <h5>subtotal</h5>
+            <p className="price opacity-75">
+              {totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} VND
+            </p>
           </div>
-        </td>
-        <td>
-          {(quantity * item.price)
-            .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
-          VND
-        </td>
-        <td>
-          <i
-            onClick={() => {
-              dispatch(cartAction.REMOVE_CART(item.id));
-              toast.info("Remove from cart", { icon: "🗑" });
-            }}
-            className="fa-solid fa-trash-can"
-          ></i>
-        </td>
-      </tr>
+          <hr />
+          <div className="d-flex align-items-center justify-content-between">
+            <h5>total</h5>
+            <p className="price">
+              {totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} VND
+            </p>
+          </div>
+          <input
+            className="py-2 ps-3 w-100 mt-3"
+            type="text"
+            placeholder="Enter your coupon"
+            ref={couponRef}
+          />
+          <button className="py-2 w-100 bg-black text-white">
+            <i className="fa-solid fa-gift me-2"></i>
+            Apply coupon
+          </button>
+        </div>
+      </Col>
     );
-  });
+  } else if (isError) {
+    bodyContent = <div>{error.toString()}</div>;
+  }
 
   return (
     <>
@@ -106,40 +87,11 @@ export default function CartPage() {
                   <th>REMOVE</th>
                 </tr>
               </thead>
-              <tbody>{renderCartList}</tbody>
+              {bodyContent}
             </Table>
           </Col>
           {/* cart total */}
-          <Col md="4" xl="4">
-            <div className="bg-light text-uppercase p-4">
-              <h3 className="mb-3">CART TOTAL</h3>
-              <div className="d-flex align-items-center justify-content-between">
-                <h5>subtotal</h5>
-                <p className="price opacity-75">
-                  {totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
-                  VND
-                </p>
-              </div>
-              <hr />
-              <div className="d-flex align-items-center justify-content-between">
-                <h5>total</h5>
-                <p className="price">
-                  {totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
-                  VND
-                </p>
-              </div>
-              <input
-                className="py-2 ps-3 w-100 mt-3"
-                type="text"
-                placeholder="Enter your coupon"
-                ref={couponRef}
-              />
-              <button className="py-2 w-100 bg-black text-white">
-                <i className="fa-solid fa-gift me-2"></i>
-                Apply coupon
-              </button>
-            </div>
-          </Col>
+          {subContent}
           {/**/}
         </Row>
         <Row>
@@ -167,13 +119,6 @@ export default function CartPage() {
           </Col>
         </Row>
       </Container>
-      <ToastContainer
-        position="top-right"
-        hideProgressBar={true}
-        newestOnTop={true}
-        autoClose={700}
-        theme="light"
-      />
     </>
   );
 }

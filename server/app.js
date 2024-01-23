@@ -31,7 +31,7 @@ app.use(
     saveUninitialized: false,
     store: mongoDBStore.create({
       mongoUrl:
-        "mongodb+srv://sillywhale:Q0wfauvCoGydCKuS@funix-sw.v8apyjj.mongodb.net/asm3-ecom?retryWrites=true&w=majority",
+        "mongodb+srv://sillywhale:Arvgw2WvQRbsfzSt@funix-sw.v8apyjj.mongodb.net/asm3-ecom?retryWrites=true&w=majority",
       collectionName: "sessions",
     }),
     cookie: { maxAge: 86400000 },
