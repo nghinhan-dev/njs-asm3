@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useRef } from "react";
 // bootstrap
 import Row from "react-bootstrap/Row";
@@ -13,6 +14,18 @@ import useLoginOnLoad from "../../utils/loginOnLoad";
 import CartItem from "./CartItem";
 import { toast } from "react-toastify";
 
+let CartItemExcerpt = ({ item }) => {
+  return (
+    <>
+      <td>
+        <img className="img-table" src={item.img1} alt={`${item.name}.jpg`} />
+      </td>
+      <td>{item.name}</td>
+      <td>{item.price} VND</td>
+    </>
+  );
+};
+
 export default function CartPage() {
   const { user } = useUserContext();
   const navigate = useNavigate();
@@ -26,6 +39,7 @@ export default function CartPage() {
         const result = await loginOnLoad();
 
         if (result?.error) {
+          navigate("/login");
           isMounted && toast.error(result.error);
         }
       } catch (error) {
@@ -36,9 +50,10 @@ export default function CartPage() {
     user === null && onLoad();
 
     return () => (isMounted = false);
-  }, [user, navigate, loginOnLoad]);
+  });
 
-  const { data, isLoading, isSuccess, isError, error } = useGetCartQuery();
+  const { data, isLoading, isSuccess, isError, isFetching, error } =
+    useGetCartQuery();
   const couponRef = useRef();
 
   let bodyContent;
@@ -55,10 +70,19 @@ export default function CartPage() {
 
     const renderCartList = items.map((itemDetail) => {
       const { item, quantity } = itemDetail;
-      return <CartItem key={item._id} item={item} quantity={quantity} />;
+      return (
+        <tr key={item._id}>
+          <CartItemExcerpt item={item} />
+          <CartItem id={item._id} quantity={quantity} price={item.price} />
+        </tr>
+      );
     });
 
-    bodyContent = <tbody>{renderCartList}</tbody>;
+    bodyContent = (
+      <tbody className={isFetching ? "isFetching" : null}>
+        {renderCartList}
+      </tbody>
+    );
     subContent = (
       <Col md="4" xl="4">
         <div className="bg-light text-uppercase p-4">
@@ -90,7 +114,9 @@ export default function CartPage() {
       </Col>
     );
   } else if (isError) {
-    bodyContent = <div>{error.toString()}</div>;
+    console.log(error);
+
+    bodyContent = <div>{data.toString()}</div>;
   }
 
   return (

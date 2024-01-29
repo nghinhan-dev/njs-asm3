@@ -278,6 +278,10 @@ input#quantity:focus {
   color: #dfb44f;
 }
 
+p.blur {
+  filter: blur(1px);
+}
+
 /* checkoutForm */
 
 #checkoutForm label,

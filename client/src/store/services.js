@@ -17,16 +17,20 @@ export const userApi = createApi({
       providesTags: (result = [], error, arg) => {
         return [
           "Item",
-          ...result.items.map(({ _id }) => ({ type: "Item", _id })),
+          ...result.items.map(({ _id }) => ({ type: "Item", id: _id })),
         ];
       },
     }),
     // GET single item
-    getItem: builder.query({
+    getCartItem: builder.query({
       query: (id) => ({
         url: `cart/${id}`,
         credentials: "include",
       }),
+      providesTags: (result, error, arg) => {
+        console.log(result);
+        return [{ type: "Item", id: arg }];
+      },
     }),
     // PATCH update cart's item
     updateCart: builder.mutation({
@@ -36,10 +40,10 @@ export const userApi = createApi({
         body,
         credentials: "include",
       }),
-      invalidatesTags: (result, error, arg) => [{ type: "Item", _id: arg._id }],
+      invalidatesTags: (result, error, arg) => [{ type: "Item", id: arg._id }],
     }),
   }),
 });
 
-export const { useGetCartQuery, useGetItemQuery, useUpdateCartMutation } =
+export const { useGetCartQuery, useGetCartItemQuery, useUpdateCartMutation } =
   userApi;

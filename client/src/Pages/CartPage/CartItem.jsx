@@ -1,33 +1,29 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
 import { toast } from "react-toastify";
-import { useUpdateCartMutation } from "../../store/services";
+import {
+  useGetCartItemQuery,
+  useUpdateCartMutation,
+} from "../../store/services";
 
-export default function CartItem({ item, quantity }) {
-  const [currentQ, setQuantity] = useState(quantity);
-  const [updateCart] = useUpdateCartMutation();
+export default function CartItem({ id }) {
+  const { data, isFetching, isSuccess } = useGetCartItemQuery(id);
+  const [updateCart, { isLoading }] = useUpdateCartMutation();
 
-  const onChangeQuantity = async (intent) => {
+  const onChangeQuantity = async (intent, quantity) => {
     let newQuantity;
 
-    if (currentQ === 1) {
+    if ((quantity === 1 && intent === "minus") || isLoading) {
       return;
     }
 
     if (intent === "plus") {
-      newQuantity = currentQ + 1;
+      newQuantity = quantity + 1;
     } else if (intent === "minus") {
-      newQuantity = currentQ - 1;
+      newQuantity = quantity - 1;
     }
 
-    setQuantity(newQuantity); // Update state
-
     try {
-      const res = await updateCart({ _id: item._id, newQuantity: newQuantity });
-
-      if (!res.ok) {
-        throw new Error(res.error);
-      }
+      await updateCart({ _id: id, newQuantity: newQuantity });
 
       intent === "minus"
         ? toast.success("Minus item", { icon: "➖" })
@@ -37,44 +33,51 @@ export default function CartItem({ item, quantity }) {
     }
   };
 
-  return (
-    <tr>
-      <td>
-        <img className="img-table" src={item.img1} alt={`${item.name}.jpg`} />
-      </td>
-      <td>{item.name}</td>
-      <td>{item.price} VND</td>
-      <td>
-        <div className="px-3 d-flex align-items-center">
+  let content;
+
+  if (isSuccess) {
+    const { item, quantity } = data;
+
+    content = (
+      <>
+        <td>
+          <div className="px-3 d-flex align-items-center">
+            <i
+              onClick={() => {
+                onChangeQuantity("minus", quantity);
+              }}
+              className="fa-solid fa-chevron-left"
+            ></i>
+            <p className={`px-2 ${isFetching || isLoading ? "blur" : null}`}>
+              {quantity}
+            </p>
+            <i
+              onClick={() => {
+                onChangeQuantity("plus", quantity);
+              }}
+              className="fa-solid fa-chevron-right"
+            ></i>
+          </div>
+        </td>
+        <td>
+          <p className={isFetching || isLoading ? "blur" : null}>
+            {(quantity * item.price)
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+            VND
+          </p>
+        </td>
+        <td>
           <i
             onClick={() => {
-              onChangeQuantity("minus");
+              toast.info("Remove from cart", { icon: "🗑" });
             }}
-            className="fa-solid fa-chevron-left"
+            className="fa-solid fa-trash-can"
           ></i>
-          <p className="px-2">{currentQ}</p>
-          <i
-            onClick={() => {
-              onChangeQuantity("plus");
-            }}
-            className="fa-solid fa-chevron-right"
-          ></i>
-        </div>
-      </td>
-      <td>
-        {(quantity * item.price)
-          .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
-        VND
-      </td>
-      <td>
-        <i
-          onClick={() => {
-            toast.info("Remove from cart", { icon: "🗑" });
-          }}
-          className="fa-solid fa-trash-can"
-        ></i>
-      </td>
-    </tr>
-  );
+        </td>
+      </>
+    );
+  }
+
+  return <>{content}</>;
 }
