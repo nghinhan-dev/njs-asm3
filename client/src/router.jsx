@@ -10,6 +10,7 @@ import CartPage from "./Pages/CartPage/CartPage";
 import CheckoutPage from "./Pages/CheckoutPage/CheckoutPage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
+import HistoryPage from "./Pages/HistoryPage/HistoryPage";
 // loader
 import { loader as rootLoader } from "./utils/loader";
 import { signUp } from "./Pages/LoginPage/action";
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <RegisterPage />,
+      },
+      {
+        path: "history",
+        element: <HistoryPage />,
       },
     ],
   },

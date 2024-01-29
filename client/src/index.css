@@ -282,6 +282,13 @@ p.blur {
   filter: blur(0.6px);
 }
 
+#cartTable .td-wrap p {
+  width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* checkoutForm */
 
 #checkoutForm label,
