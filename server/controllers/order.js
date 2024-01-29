@@ -1,15 +1,16 @@
 const Order = require("../models/Orders");
 
 exports.postOrder = async (req, res) => {
-  const reqBody = req.body;
+  const reqAddress = req.body.address;
 
   const newOrder = new Order({
-    userID: reqBody.userID,
-    status: reqBody.status,
-    delivery: reqBody.delivery,
-    items: reqBody.items,
-    total: reqBody.total,
+    userID: req.user._id,
+    address: reqAddress,
+    items: req.user.cart.items,
+    total: req.user.cart.totalPrice,
   });
+
+  console.log(newOrder);
 
   await newOrder.save();
 
@@ -17,10 +18,13 @@ exports.postOrder = async (req, res) => {
 };
 
 exports.getOrders = async (req, res) => {
-  const userID = req.params.userID;
+  const userID = req.user._id;
 
   try {
-    const orderArr = await Order.find({ userID: userID }).populate("items");
+    const orderArr = await Order.find({ user: userID }).populate(
+      "user",
+      "-cart"
+    );
     res.status(200).send(orderArr);
   } catch (error) {
     console.error("Error:", error);

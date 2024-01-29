@@ -2,14 +2,27 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const orderSchema = new Schema({
-  userID: String,
-  status: String,
-  delivery: String,
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  address: String,
+  status: {
+    type: String,
+    default: "COD",
+  },
+  delivery: {
+    type: String,
+    default: "On delivery",
+  },
   items: [
     {
-      default: [],
-      type: Schema.Types.ObjectId,
-      ref: "Product",
+      item: {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+      },
+      quantity: Number,
+      _id: false,
     },
   ],
   total: Number,
