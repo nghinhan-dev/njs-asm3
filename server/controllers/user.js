@@ -96,7 +96,15 @@ exports.logOut = async (req, res) => {
 };
 
 exports.updateCart = async (req, res) => {
-  let user = req.user;
+  let user = await req.user.populate({
+    path: "cart",
+    populate: {
+      path: "items",
+      populate: {
+        path: "item",
+      },
+    },
+  });
 
   try {
     const updatedItem = req.body;
@@ -121,6 +129,9 @@ exports.updateCart = async (req, res) => {
     );
 
     user.cart.items[cartItemIndex].quantity = updatedItem.newQuantity;
+    user.cart.totalPrice = user.cart.items.reduce((acc, cur) => {
+      return acc + cur.item.price * cur.quantity;
+    }, 0);
 
     await user.save();
 
