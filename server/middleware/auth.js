@@ -9,12 +9,10 @@ exports.login = async (req, res, next) => {
         req.user = user;
         return next();
       } else {
-        res.status(404).send("User not found");
-        throw new Error("User not found");
+        res.status(404).send({ statusText: "User not found" });
       }
     } else {
-      res.status(409).send("Login first");
-      throw new Error("Login first");
+      res.status(409).send({ statusText: "Login first" });
     }
   } catch (error) {
     console.error("Error in loginAuth:", error);
