@@ -45,5 +45,39 @@ export const userApi = createApi({
   }),
 });
 
+export const orderApi = createApi({
+  reducerPath: "orderApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:5000/order/",
+  }),
+  tagTypes: ["Order"],
+  endpoints: (builder) => ({
+    getOrders: builder.query({
+      query: () => ({
+        url: "/",
+        credentials: "include",
+      }),
+      // eslint-disable-next-line no-unused-vars
+      providesTags: (result = [], error, arg) => {
+        return [
+          "Order",
+          ...result.map(({ id }) => ({ type: "Order", id: id })),
+        ];
+      },
+    }),
+    postOrder: builder.mutation({
+      query: (body) => ({
+        url: "/post",
+        method: "POST",
+        credentials: "include",
+        body,
+      }),
+      invalidatesTags: ["Order"],
+    }),
+  }),
+});
+
 export const { useGetCartQuery, useGetCartItemQuery, useUpdateCartMutation } =
   userApi;
+
+export const { useGetOrdersQuery, usePostOrderMutation } = orderApi;
