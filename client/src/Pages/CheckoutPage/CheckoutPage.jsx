@@ -3,11 +3,17 @@ import OtherBanner from "../../Shared/OtherBanner";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import { useGetCartQuery } from "../../store/services";
+import { useNavigate } from "react-router-dom";
+import { useGetCartQuery, usePostOrderMutation } from "../../store/services";
+import { toast } from "react-toastify";
+import { useState } from "react";
 // redux
 
 export default function CheckoutPage() {
   const { data, isLoading, isSuccess, isError, error } = useGetCartQuery();
+  const [postOrder] = usePostOrderMutation();
+  const [address, setAddress] = useState();
+  const navigate = useNavigate();
 
   let content;
 
@@ -15,6 +21,11 @@ export default function CheckoutPage() {
     content = <h1>Loading...</h1>;
   } else if (isSuccess) {
     const { items, totalPrice } = data;
+
+    if (items.length === 0) {
+      navigate("/shop");
+      toast.warning("Empty cart!");
+    }
 
     const renderCheckoutList = items.map((itemDetail) => {
       const { item, quantity } = itemDetail;
@@ -52,6 +63,16 @@ export default function CheckoutPage() {
   } else if (isError) {
     content = <h3>{error.toString()}</h3>;
   }
+
+  const onSubmitCheckout = async () => {
+    try {
+      await postOrder({ address: address });
+
+      navigate("/history");
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
 
   return (
     <>
@@ -92,10 +113,20 @@ export default function CheckoutPage() {
               </label>
               <label>
                 ADDRESS:
-                <input type="text" placeholder={"Enter Your Address"} />
+                <input
+                  type="text"
+                  placeholder={"Enter Your Address"}
+                  value={address}
+                  onChange={(event) => setAddress(event.target.value)}
+                />
               </label>
-              <button className="btn bg-black text-white">Place Order</button>
             </form>
+            <button
+              onClick={() => onSubmitCheckout()}
+              className="btn bg-black text-white"
+            >
+              Place Order
+            </button>
           </Col>
           {/* checkout total */}
           <Col md="5" xl="5">
