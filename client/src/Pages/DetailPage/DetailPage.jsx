@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useLoaderData, useRouteLoaderData } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { cartAction } from "../../store/store";
 // bootstrap
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -14,10 +12,8 @@ export default function DetailPage() {
   // react-router-doom
   const data = useRouteLoaderData("root");
   // redux
-  const dispatch = useDispatch();
 
   const {
-    _id,
     category,
     img1,
     img2,
@@ -40,15 +36,6 @@ export default function DetailPage() {
 
   // add cart hanlder
   const addCart = () => {
-    dispatch(
-      cartAction.ADD_CART({
-        id: _id,
-        name: name,
-        price: price,
-        quantity: quantity,
-        img1: img1,
-      })
-    );
     toast.success("Added to cart");
   };
 
