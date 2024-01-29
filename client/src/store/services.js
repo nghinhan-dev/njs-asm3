@@ -17,7 +17,7 @@ export const userApi = createApi({
       providesTags: (result = [], error, arg) => {
         return [
           "Item",
-          ...result.items.map(({ _id }) => ({ type: "Item", id: _id })),
+          ...result.items.map(({ id }) => ({ type: "Item", id: id })),
         ];
       },
     }),
@@ -40,7 +40,7 @@ export const userApi = createApi({
         body,
         credentials: "include",
       }),
-      invalidatesTags: (result, error, arg) => [{ type: "Item", id: arg._id }],
+      invalidatesTags: (result, error, arg) => [{ type: "Item", id: arg.id }],
     }),
   }),
 });
