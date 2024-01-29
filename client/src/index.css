@@ -279,7 +279,7 @@ input#quantity:focus {
 }
 
 p.blur {
-  filter: blur(1px);
+  filter: blur(0.6px);
 }
 
 /* checkoutForm */
