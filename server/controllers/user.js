@@ -1,5 +1,6 @@
 const User = require("../models/User");
-
+const Product = require("../models/Products");
+const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 exports.signUp = async (req, res) => {
@@ -72,19 +73,16 @@ exports.login = async (req, res) => {
 
 exports.autoLoginWithSesssionCookie = async (req, res) => {
   try {
-    console.log("session:", req.session);
     if (req.session.userID) {
       const user = await User.findById(req.session.userID);
 
       if (!user) {
-        res.status(404).send("User not found");
-        throw new Error("User not found");
+        res.status(404).send({ error: "User not found" });
       }
 
       res.status(200).send(user);
     } else {
-      res.status(409).send("Login first");
-      throw new Error("Login first");
+      res.status(409).send({ error: "Login first" });
     }
   } catch (error) {
     console.error("Error in loginAuth:", error);
@@ -102,7 +100,21 @@ exports.updateCart = async (req, res) => {
 
   try {
     const updatedItem = req.body;
-    console.log("updatedItem:", updatedItem);
+
+    if (user.cart.items.length === 0) {
+      const newItem = {
+        item: {
+          _id: new mongoose.Types.ObjectId(updatedItem._id),
+        },
+
+        quantity: updatedItem.newQuantity,
+      };
+
+      user.cart.items.push(newItem);
+
+      await user.save();
+      return res.status(200).send({ updateItem: newItem });
+    }
 
     const cartItemIndex = user.cart.items.findIndex(
       (itemDetail) => itemDetail.item._id.toString() === updatedItem._id
@@ -112,7 +124,7 @@ exports.updateCart = async (req, res) => {
 
     await user.save();
 
-    res.status(200).send(user.cart.items);
+    return res.status(200).send({ updateItem: user.cart.items[cartItemIndex] });
   } catch (error) {
     console.error("Error:", error);
   }
@@ -135,4 +147,20 @@ exports.getCart = async (req, res) => {
     console.error("Error:", error);
     res.status(500).send({ error: "Internal Server Error" });
   }
+};
+
+exports.getCartItem = async (req, res) => {
+  const itemID = req.params.itemID;
+
+  const item = await Product.findById(itemID);
+  const cartItemIndex = req.user.cart.items.findIndex(
+    (itemDetail) => itemDetail.item._id.toString() === itemID
+  );
+
+  const cartItem = {
+    item: item,
+    quantity: req.user.cart.items[cartItemIndex].quantity,
+  };
+
+  res.status(200).send(cartItem);
 };

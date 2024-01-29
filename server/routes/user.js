@@ -13,6 +13,7 @@ router.get(
 );
 router.post("/logout", userController.logOut);
 router.patch("/cart", auth.login, userController.updateCart);
+router.get("/cart/:itemID", auth.login, userController.getCartItem);
 router.get("/cart", auth.login, userController.getCart);
 
 module.exports = router;
