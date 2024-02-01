@@ -6,14 +6,17 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 // shared component
 import ProductList from "../../Shared/ProductList";
+import { useUpdateCartMutation } from "../../store/services";
 import { toast } from "react-toastify";
 
 export default function DetailPage() {
+  const [updateCart] = useUpdateCartMutation();
   // react-router-doom
   const data = useRouteLoaderData("root");
   // redux
 
   const {
+    _id,
     category,
     img1,
     img2,
@@ -35,8 +38,19 @@ export default function DetailPage() {
   const [quantity, setQuantity] = useState(1);
 
   // add cart hanlder
-  const addCart = () => {
-    toast.success("Added to cart");
+  const addCart = async (_id, quantity) => {
+    try {
+      const response = await updateCart({
+        _id: _id,
+        newQuantity: quantity,
+      }).unwrap();
+
+      if (response.error) throw new Error(response.error);
+
+      toast.success("Added to cart");
+    } catch (error) {
+      console.log("error:", error);
+    }
   };
 
   // modify long-desc
@@ -121,7 +135,7 @@ export default function DetailPage() {
               <button
                 style={{ border: "none", borderRadius: "0px" }}
                 className="btn bg-dark text-white"
-                onClick={addCart}
+                onClick={() => addCart(_id, quantity)}
               >
                 Add to cart
               </button>
