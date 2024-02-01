@@ -15,6 +15,7 @@ import HistoryPage from "./Pages/HistoryPage/HistoryPage";
 import { loader as rootLoader } from "./utils/loader";
 import { signUp } from "./Pages/LoginPage/action";
 import { getDetail } from "./Pages/DetailPage/loader";
+import OrderDetail from "./Pages/HistoryPage/OrderDetail";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: "history",
         element: <HistoryPage />,
+      },
+      {
+        path: "order/:orderId",
+        element: <OrderDetail />,
       },
     ],
   },

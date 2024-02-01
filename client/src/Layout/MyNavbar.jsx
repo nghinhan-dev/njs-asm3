@@ -106,10 +106,26 @@ export default function MyNavbar() {
               </div>
             </NavLink>
 
+            {user !== null && (
+              <NavLink
+                to="/history"
+                className={({ isActive }) =>
+                  isActive ? "active ps-4  nav-link " : "ps-4 nav-link "
+                }
+                style={({ isActive }) => {
+                  return {
+                    color: isActive && "#dfb44f",
+                  };
+                }}
+              >
+                History
+              </NavLink>
+            )}
+
             <NavLink
               to="/login"
               className={({ isActive }) =>
-                isActive ? "active ps-1 nav-link " : "ps-1 nav-link "
+                isActive ? "active ps-4 nav-link " : "ps-4 nav-link "
               }
               style={({ isActive }) => {
                 return {
@@ -125,9 +141,7 @@ export default function MyNavbar() {
                   </>
                 ) : (
                   <>
-                    <p className="d-none d-md-block">
-                      Welcome, {user.userName}
-                    </p>
+                    <p className="d-none d-md-block">{user.userName},</p>
                     <i
                       style={{ color: "#dfb44f" }}
                       className="fa-solid fa-arrow-right-from-bracket icon-logout"

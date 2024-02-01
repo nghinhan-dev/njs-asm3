@@ -34,7 +34,7 @@ export default function HistoryPage() {
           <td>{delivery}</td>
           <td>{status}</td>
           <td>
-            <Link className="btn bg-black text-white" to={`order/${_id}`}>
+            <Link className="btn bg-black text-white" to={`/order/${_id}`}>
               View
             </Link>
           </td>
