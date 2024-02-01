@@ -38,7 +38,7 @@ exports.signUp = async (req, res) => {
 exports.login = async (req, res) => {
   const { userName, password } = req.body;
 
-  if (req.session.isAuth) {
+  if (req.user.userName === userName) {
     return res.status(409).send({
       error: "Already logged in",
     });
@@ -87,6 +87,49 @@ exports.autoLoginWithSesssionCookie = async (req, res) => {
   } catch (error) {
     console.error("Error in loginAuth:", error);
   }
+};
+
+exports.loginAdmin = async (req, res) => {
+  const { userName, password } = req.body;
+
+  if (req.session.isAuth) {
+    return res.status(409).send({
+      error: "Already logged in",
+    });
+  }
+
+  const user = await User.find({ userName: userName });
+
+  if (user.length === 0) {
+    return res.status(404).send({
+      error: "User not found",
+      message: "Provided username doesn't exist",
+    });
+  }
+
+  const isMatch = bcrypt.compare(password, user[0].password);
+
+  if (!isMatch) {
+    return res.status(401).send({
+      error: "Unauthorized",
+      message: "Incorrect password",
+    });
+  }
+
+  if (user[0].role !== "admin") {
+    return res.status(401).send({
+      error: "Invalid",
+      message: "Unauthorized account",
+    });
+  }
+
+  req.session.userID = user[0]._id;
+  req.session.isAdmin = true;
+  req.session.save();
+
+  return res
+    .status(200)
+    .send({ statusText: "Login sucessfully", userName: user[0].userName });
 };
 
 exports.logOut = async (req, res) => {
