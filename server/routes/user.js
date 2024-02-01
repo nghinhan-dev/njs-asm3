@@ -3,6 +3,7 @@ const router = express.Router();
 
 const userController = require("../controllers/user");
 const userValidate = require("../middleware/validate/userValidate");
+const carValidate = require("../middleware/validate/cartValidate");
 const auth = require("../middleware/auth");
 
 router.post("/signup", userValidate.signUpValidator(), userController.signUp);
@@ -12,7 +13,12 @@ router.get(
   userController.autoLoginWithSesssionCookie
 );
 router.post("/logout", userController.logOut);
-router.patch("/cart", auth.login, userController.updateCart);
+router.patch(
+  "/cart",
+  auth.login,
+  carValidate.addCartValidator(),
+  userController.updateCart
+);
 router.get("/cart/:itemID", auth.login, userController.getCartItem);
 router.get("/cart", auth.login, userController.getCart);
 
