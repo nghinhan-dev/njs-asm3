@@ -10,17 +10,11 @@ export default function CartItem({ id }) {
   const [updateCart, { isLoading }] = useUpdateCartMutation();
 
   const onChangeQuantity = async (intent, quantity) => {
-    let newQuantity;
-
     if ((quantity === 1 && intent === "minus") || isLoading) {
       return;
     }
 
-    if (intent === "plus") {
-      newQuantity = quantity + 1;
-    } else if (intent === "minus") {
-      newQuantity = quantity - 1;
-    }
+    let newQuantity = intent === "plus" ? 1 : -1;
 
     try {
       await updateCart({ _id: id, newQuantity: newQuantity });
