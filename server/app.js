@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -30,8 +31,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: mongoDBStore.create({
-      mongoUrl:
-        "mongodb+srv://sillywhale:bkqhNe9GOFKpkRoq@funix-sw.v8apyjj.mongodb.net/asm3-ecom?retryWrites=true&w=majority",
+      mongoUrl: `mongodb+srv://${process.env.DATABASE_KEY}@funix-sw.v8apyjj.mongodb.net/asm3-ecom?retryWrites=true&w=majority`,
       collectionName: "sessions",
     }),
     cookie: { maxAge: 86400000 },
