@@ -24,6 +24,10 @@ const userSchema = new Schema({
   email: String,
   password: String,
   phoneNumber: String,
+  role: {
+    type: String,
+    default: "customer",
+  },
   cart: cartSchema,
   role: String,
 });
