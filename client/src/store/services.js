@@ -1,16 +1,16 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const userApi = createApi({
-  reducerPath: "userApi",
+export const api = createApi({
+  reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/user/",
+    baseUrl: "http://localhost:5000/",
   }),
-  tagTypes: ["Item"],
+  tagTypes: ["Item", "Order"],
   endpoints: (builder) => ({
     // GET cart
     getCart: builder.query({
       query: () => ({
-        url: "cart",
+        url: "user/cart",
         credentials: "include",
       }),
       // eslint-disable-next-line no-unused-vars
@@ -24,7 +24,7 @@ export const userApi = createApi({
     // GET single item
     getCartItem: builder.query({
       query: (id) => ({
-        url: `cart/${id}`,
+        url: `user/cart/${id}`,
         credentials: "include",
       }),
       providesTags: (result, error, arg) => {
@@ -35,26 +35,16 @@ export const userApi = createApi({
     // PATCH update cart's item
     updateCart: builder.mutation({
       query: (body) => ({
-        url: "cart",
+        url: "user/cart",
         method: "PATCH",
         body,
         credentials: "include",
       }),
       invalidatesTags: (result, error, arg) => [{ type: "Item", id: arg.id }],
     }),
-  }),
-});
-
-export const orderApi = createApi({
-  reducerPath: "orderApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/order/",
-  }),
-  tagTypes: ["Order"],
-  endpoints: (builder) => ({
     getOrders: builder.query({
       query: () => ({
-        url: "/",
+        url: "order/",
         credentials: "include",
       }),
       // eslint-disable-next-line no-unused-vars
@@ -67,17 +57,30 @@ export const orderApi = createApi({
     }),
     postOrder: builder.mutation({
       query: (body) => ({
-        url: "/post",
+        url: "order/post",
         method: "POST",
         credentials: "include",
         body,
       }),
-      invalidatesTags: ["Order"],
+      invalidatesTags: ["Order", "Item"],
+    }),
+    getSingleOrder: builder.query({
+      query: (id) => ({
+        url: `order/${id}`,
+        credentials: "include",
+      }),
+      providesTags: (result, error, arg) => {
+        return [{ type: "Order", id: arg }];
+      },
     }),
   }),
 });
 
-export const { useGetCartQuery, useGetCartItemQuery, useUpdateCartMutation } =
-  userApi;
-
-export const { useGetOrdersQuery, usePostOrderMutation } = orderApi;
+export const {
+  useGetCartQuery,
+  useGetCartItemQuery,
+  useUpdateCartMutation,
+  useGetOrdersQuery,
+  usePostOrderMutation,
+  useGetSingleOrderQuery,
+} = api;
