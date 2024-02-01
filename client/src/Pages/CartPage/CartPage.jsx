@@ -68,15 +68,27 @@ export default function CartPage() {
   } else if (isSuccess) {
     const { items, totalPrice } = data;
 
-    const renderCartList = items.map((itemDetail) => {
-      const { item, quantity } = itemDetail;
-      return (
-        <tr key={item._id}>
-          <CartItemExcerpt item={item} />
-          <CartItem id={item._id} quantity={quantity} price={item.price} />
+    let renderCartList;
+
+    if (items.length !== 0) {
+      renderCartList = items.map((itemDetail) => {
+        const { item, quantity } = itemDetail;
+        return (
+          <tr key={item._id}>
+            <CartItemExcerpt item={item} />
+            <CartItem id={item._id} quantity={quantity} price={item.price} />
+          </tr>
+        );
+      });
+    } else {
+      renderCartList = (
+        <tr>
+          <td>
+            <p>Empty cart</p>
+          </td>
         </tr>
       );
-    });
+    }
 
     bodyContent = (
       <tbody className={isFetching ? "isFetching" : null}>

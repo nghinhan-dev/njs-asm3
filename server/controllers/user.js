@@ -128,10 +128,24 @@ exports.updateCart = async (req, res) => {
       (itemDetail) => itemDetail.item._id.toString() === updatedItem._id
     );
 
-    user.cart.items[cartItemIndex].quantity = updatedItem.newQuantity;
-    user.cart.totalPrice = user.cart.items.reduce((acc, cur) => {
-      return acc + cur.item.price * cur.quantity;
-    }, 0);
+    if (cartItemIndex === -1) {
+      const newItem = {
+        item: {
+          _id: new mongoose.Types.ObjectId(updatedItem._id),
+        },
+
+        quantity: updatedItem.newQuantity,
+      };
+
+      user.cart.items.push(newItem);
+      await user.save();
+      return res.status(200).send({ updateItem: newItem });
+    } else {
+      user.cart.items[cartItemIndex].quantity += updatedItem.newQuantity;
+      user.cart.totalPrice = user.cart.items.reduce((acc, cur) => {
+        return acc + cur.item.price * cur.quantity;
+      }, 0);
+    }
 
     await user.save();
 
