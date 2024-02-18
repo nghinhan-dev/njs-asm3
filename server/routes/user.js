@@ -8,6 +8,11 @@ const auth = require("../middleware/auth");
 
 router.post("/signup", userValidate.signUpValidator(), userController.signUp);
 router.post("/login", userValidate.loginValidator(), userController.login);
+router.post(
+  "/loginAdmin",
+  userValidate.loginValidator(),
+  userController.loginAdmin
+);
 router.get(
   "/loginWithSessionCokiee",
   userController.autoLoginWithSesssionCookie

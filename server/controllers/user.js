@@ -38,7 +38,7 @@ exports.signUp = async (req, res) => {
 exports.login = async (req, res) => {
   const { userName, password } = req.body;
 
-  if (req.user.userName === userName) {
+  if (req.user?.userName === userName) {
     return res.status(409).send({
       error: "Already logged in",
     });
@@ -92,7 +92,7 @@ exports.autoLoginWithSesssionCookie = async (req, res) => {
 exports.loginAdmin = async (req, res) => {
   const { userName, password } = req.body;
 
-  if (req.session.isAuth) {
+  if (req.user?.userName === userName) {
     return res.status(409).send({
       error: "Already logged in",
     });
@@ -127,9 +127,7 @@ exports.loginAdmin = async (req, res) => {
   req.session.isAdmin = true;
   req.session.save();
 
-  return res
-    .status(200)
-    .send({ statusText: "Login sucessfully", userName: user[0].userName });
+  return res.status(200).send({ user: user[0] });
 };
 
 exports.logOut = async (req, res) => {

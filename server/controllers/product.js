@@ -7,9 +7,26 @@ exports.getProducts = async (req, res) => {
 };
 
 exports.getDetail = async (req, res) => {
-  const id = req.params.prdID;
+  try {
+    const id = req.params.prdID;
 
-  const product = await Product.findById(id);
+    const product = await Product.findById(id);
 
-  res.status(200).send(product);
+    res.status(200).send(product);
+  } catch (error) {
+    console.log("error:", error);
+  }
+};
+
+exports.updateProduct = async (req, res) => {
+  try {
+    const id = req.params.prdID;
+    const update = req.body;
+
+    const product = await Product.findByIdAndUpdate(id, update, { new: true });
+
+    res.status(200).send(product);
+  } catch (error) {
+    console.log("error:", error);
+  }
 };
