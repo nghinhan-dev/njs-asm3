@@ -37,7 +37,7 @@ export default function Hotel() {
           <p>{item.category}</p>
         </td>
         <td>
-          <p>{item?.count || 0}</p>
+          <p>{item.count}</p>
         </td>
         <td>
           <Form

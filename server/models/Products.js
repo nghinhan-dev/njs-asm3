@@ -10,6 +10,10 @@ const productSchema = new Schema({
   long_desc: String,
   name: String,
   price: Number,
+  count: {
+    type: Number,
+    default: 0,
+  },
   short_desc: String,
 });
 

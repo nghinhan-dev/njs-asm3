@@ -14,6 +14,7 @@ export default function AddHotel() {
     long_desc: "",
     name: "",
     price: 0,
+    count: 0,
     short_desc: "",
   });
 
