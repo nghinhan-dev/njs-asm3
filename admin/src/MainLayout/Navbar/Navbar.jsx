@@ -9,7 +9,7 @@ export default function Navbar() {
       <ul>
         {auth ? (
           <>
-            <p>Hello {auth?.username}!</p>
+            <p>Hello, {auth?.userName}!</p>
             <a onClick={() => setAuth(null)}>
               <i className="fa-solid fa-arrow-right-from-bracket"></i> Logout
             </a>

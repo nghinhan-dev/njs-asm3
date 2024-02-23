@@ -23,8 +23,6 @@ export default function MyNavbar() {
       credentials: "include",
     });
 
-    console.log(res);
-
     if (res.ok) {
       setUser(null);
     }
@@ -141,7 +139,7 @@ export default function MyNavbar() {
                   </>
                 ) : (
                   <>
-                    <p className="d-none d-md-block">{user.userName},</p>
+                    <p className="d-none d-md-block">{user},</p>
                     <i
                       style={{ color: "#dfb44f" }}
                       className="fa-solid fa-arrow-right-from-bracket icon-logout"
