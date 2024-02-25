@@ -327,6 +327,7 @@ p.blur {
 }
 
 #chatRoom {
+  cursor: unset;
   position: fixed;
   right: 60px;
   top: 37vh;
@@ -334,6 +335,7 @@ p.blur {
   width: 315px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.514);
   z-index: 2;
+  border: none;
 }
 
 #chatRoom p {
@@ -341,8 +343,14 @@ p.blur {
   font-weight: bold;
 }
 
-#chatRoom {
-  border: none;
+#chatRoom i {
+  cursor: pointer;
+
+  transition: 0.4s all;
+}
+
+#chatRoom i:hover {
+  color: #dfb44f;
 }
 
 #chatRoom .card-footer input {

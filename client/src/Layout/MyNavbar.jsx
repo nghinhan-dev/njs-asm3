@@ -139,7 +139,7 @@ export default function MyNavbar() {
                   </>
                 ) : (
                   <>
-                    <p className="d-none d-md-block">{user},</p>
+                    <p className="d-none d-md-block">{user.userName},</p>
                     <i
                       style={{ color: "#dfb44f" }}
                       className="fa-solid fa-arrow-right-from-bracket icon-logout"

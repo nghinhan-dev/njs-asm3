@@ -1,4 +1,3 @@
-import UserProvider from "../Context/provider";
 import MyNavbar from "./MyNavbar";
 import Footer from "./Footer";
 import ChatRoom from "./ChatRoom";
@@ -27,7 +26,7 @@ export default function Layout() {
   }, []);
 
   return (
-    <UserProvider>
+    <>
       <ToastContainer
         position="top-right"
         hideProgressBar={true}
@@ -49,6 +48,6 @@ export default function Layout() {
       {isChat &&
         createPortal(<ChatRoom />, document.getElementsByTagName("body")[0])}
       <Footer />
-    </UserProvider>
+    </>
   );
 }
