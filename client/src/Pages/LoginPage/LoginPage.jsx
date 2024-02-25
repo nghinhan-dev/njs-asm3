@@ -17,8 +17,8 @@ export default function LoginPage() {
       setIsLogin((prevState) => !prevState);
     }
 
-    if (actionData?.userName !== undefined) {
-      setUser(() => actionData.userName);
+    if (actionData?.user !== undefined) {
+      setUser(() => actionData.user);
       navigate("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

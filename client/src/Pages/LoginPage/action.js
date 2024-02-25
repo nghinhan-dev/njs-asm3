@@ -14,7 +14,6 @@ export async function signUp({ request }) {
     });
 
     const result = await res.json();
-    console.log("result:", result);
 
     if (!res.ok) {
       return toast.error(result.message, { icon: "💢" });
@@ -23,7 +22,7 @@ export async function signUp({ request }) {
     toast.success(
       data.intent === "signup"
         ? "Account created"
-        : `Welcome ${result.userName}`,
+        : `Welcome ${result.user.userName}`,
       { icon: "🥰" }
     );
     return result;
