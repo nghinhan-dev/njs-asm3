@@ -3,40 +3,29 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const session = require("express-session");
-const mongoDBStore = require("connect-mongo");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 
 const { mongooseConnect } = require("./util/connectDB");
+const { sessionMiddleware, corsConfig } = require("./util/serverUtil");
 
 // routes
 const userRoutes = require("./routes/user");
 const prdRoutes = require("./routes/product");
 const orderRoutes = require("./routes/order");
 
+// socket
+const registerChatHandlers = require("./socket/handlers/chatHandler");
+
 const app = express();
+const httpServer = createServer(app);
 
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "http://localhost:3001"],
-    credentials: true,
-  })
-);
+app.use(cors(corsConfig));
 
-app.use(
-  session({
-    secret: "5ad070abf4844032b8e2e0312580db53",
-    resave: false,
-    saveUninitialized: false,
-    store: mongoDBStore.create({
-      mongoUrl: `mongodb+srv://${process.env.DATABASE_KEY}@funix-sw.v8apyjj.mongodb.net/asm3-ecom?retryWrites=true&w=majority`,
-      collectionName: "sessions",
-    }),
-    cookie: { maxAge: 86400000 },
-  })
-);
+app.use(sessionMiddleware);
 
 app.use(function (req, res, next) {
   res.header("Content-Type", "application/json;charset=UTF-8");
@@ -52,8 +41,19 @@ app.use("/user", userRoutes);
 app.use("/product", prdRoutes);
 app.use("/order", orderRoutes);
 
+const io = new Server(httpServer, {
+  cors: corsConfig,
+});
+
+io.engine.use(sessionMiddleware);
+io.on("connection", (socket) => {
+  console.log(socket.request.session);
+
+  registerChatHandlers(io, socket);
+});
+
 mongooseConnect()
   .then(() => {
-    app.listen(5000, () => console.log("Rocking on 5000 🚀"));
+    httpServer.listen(5000, () => console.log("Rocking on 5000 🚀"));
   })
   .catch((error) => console.log(error));
