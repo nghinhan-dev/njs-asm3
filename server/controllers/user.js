@@ -68,7 +68,7 @@ exports.login = async (req, res) => {
 
   return res
     .status(200)
-    .send({ statusText: "Login sucessfully", userName: user[0].userName });
+    .send({ statusText: "Login sucessfully", user: user[0] });
 };
 
 exports.autoLoginWithSesssionCookie = async (req, res) => {
@@ -131,7 +131,7 @@ exports.loginAdmin = async (req, res) => {
 };
 
 exports.logOut = async (req, res) => {
-  req.session.destroy();
+  req.session.destroy(() => {});
 
   res.status(200).send("Log out");
 };
