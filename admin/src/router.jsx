@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import MainLayout from "./MainLayout/MainLayout";
+import App from "./App";
 
 // HOTEL related routes
 import Product from "./Product/Components/Product";
@@ -21,11 +21,12 @@ import Dashboard from "./Dashboard/Dashboard";
 // Transaction
 import Transaction from "./Transaction/Transaction";
 import { getTrans } from "./Transaction/util";
+import Message from "./Message/Message";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: <App />,
     action: login,
     children: [
       //index
@@ -60,6 +61,11 @@ const router = createBrowserRouter([
             action: addPrd,
           },
         ],
+      },
+
+      {
+        path: "message",
+        element: <Message />,
       },
 
       // Transactions related paths

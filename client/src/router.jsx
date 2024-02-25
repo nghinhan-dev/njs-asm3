@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import Layout from "./Layout/Layout";
+import App from "./App";
 // pages
 import ErrorPage from "./Pages/ErrorPage";
 import HomePage from "./Pages/HomePage/HomePage";
@@ -20,7 +20,7 @@ import OrderDetail from "./Pages/HistoryPage/OrderDetail";
 const router = createBrowserRouter([
   {
     id: "root",
-    element: <Layout />,
+    element: <App />,
     errorElement: <ErrorPage />,
     loader: rootLoader,
     children: [
