@@ -13,7 +13,11 @@ const sessionMiddleware = session({
 });
 
 const corsConfig = {
-  origin: ["http://localhost:3000", "http://localhost:3001"],
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://botique-fenk.onrender.com",
+  ],
   credentials: true,
 };
 
