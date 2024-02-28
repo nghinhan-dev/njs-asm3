@@ -9,10 +9,11 @@ const { sessionMiddleware, corsConfig } = require("../util/serverUtil");
 const { initIOEvent } = require("../socket/initIOEvent");
 
 async function createApp(httpServer) {
-  await mongooseConnect();
-  console.log("Connected to DB 💾");
-
+  mongooseConnect()
+    .then(() => console.log("Connected to DB 💾"))
+    .catch((err) => console.log(err));
   const app = createExpressApp();
+  httpServer.on("request", app);
 
   app.use(cors(corsConfig));
 
@@ -30,7 +31,7 @@ function createExpressApp() {
   const app = express();
 
   app.use(bodyParser.json());
-  app.use(cookieParser);
+  app.use(cookieParser());
 
   return app;
 }

@@ -7,6 +7,5 @@ const httpServer = createServer();
 
 (async () => {
   await createApp(httpServer);
+  httpServer.listen(5000, () => console.log("Rocking on 5000 🚀"));
 })();
-
-httpServer.listen(5000, () => console.log("Rocking on 5000 🚀"));
