@@ -1,5 +1,5 @@
 export async function loader() {
-  const response = await fetch("http://localhost:5000/product", {
+  const response = await fetch("https://njs-asm3.onrender.com/product", {
     credentials: "include",
   });
 

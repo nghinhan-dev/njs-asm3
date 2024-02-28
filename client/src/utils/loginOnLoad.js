@@ -5,7 +5,7 @@ const useLoginLoad = () => {
 
   const loginLoad = async () => {
     const response = await fetch(
-      "http://localhost:5000/user/loginWithSessionCokiee",
+      "https://njs-asm3.onrender.com/user/loginWithSessionCokiee",
       {
         credentials: "include",
       }
