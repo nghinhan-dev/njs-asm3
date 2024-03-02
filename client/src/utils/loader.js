@@ -1,5 +1,7 @@
+import { URI } from "../utils/url";
+
 export async function loader() {
-  const response = await fetch("https://njs-asm3.onrender.com/product", {
+  const response = await fetch(`${URI}/product`, {
     credentials: "include",
   });
 

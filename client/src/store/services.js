@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { URI } from "../utils/url";
 
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://njs-asm3.onrender.com/",
+    baseUrl: `${URI}`,
   }),
   tagTypes: ["Item", "Order"],
   endpoints: (builder) => ({

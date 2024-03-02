@@ -1,4 +1,5 @@
 import { io } from "socket.io-client";
+import { URI } from "./utils/url";
 
 const sendMsgHandler = (msg, user) => {
   socket.emit("chat:send", msg, user);
@@ -10,6 +11,6 @@ const logOutSocket = () => {
 
 export { sendMsgHandler, logOutSocket };
 
-export const socket = io("https://njs-asm3.onrender.com/", {
+export const socket = io(URI, {
   withCredentials: true,
 });
