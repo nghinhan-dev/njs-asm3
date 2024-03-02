@@ -1,12 +1,13 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const { useRoutes } = require("./routes");
 const { mongooseConnect } = require("../util/connectDB");
 const { sessionMiddleware, corsConfig } = require("../util/serverUtil");
-const { Server } = require("socket.io");
-const { initIOEvent } = require("../socket/initIOEvent");
+// const { Server } = require("socket.io");
+// const { initIOEvent } = require("../socket/initIOEvent");
 
 async function createApp(httpServer) {
   mongooseConnect()
@@ -33,6 +34,7 @@ function createExpressApp() {
 
   app.use(bodyParser.json());
   app.use(cookieParser());
+  app.use(express.static(path.join(__dirname, "client", "dist")));
 
   app.use(function (req, res, next) {
     res.header("Content-Type", "application/json;charset=UTF-8");
