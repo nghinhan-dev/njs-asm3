@@ -2,10 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const { Server } = require("socket.io");
 const { useRoutes } = require("./routes");
 const { mongooseConnect } = require("../util/connectDB");
 const { sessionMiddleware, corsConfig } = require("../util/serverUtil");
+const { Server } = require("socket.io");
 const { initIOEvent } = require("../socket/initIOEvent");
 
 async function createApp(httpServer) {
@@ -17,12 +17,13 @@ async function createApp(httpServer) {
 
   app.use(cors(corsConfig));
 
-  const io = new Server(httpServer, {
-    cors: corsConfig,
-  });
+  // const io = new Server(httpServer, {
+  //   cors: corsConfig,
+  // });
 
-  initAuth(app, io);
-  initIOEvent(io);
+  // initAuth(app, io);
+  initAuth(app);
+  // initIOEvent(io);
 
   useRoutes(app);
 }
@@ -48,7 +49,7 @@ function createExpressApp() {
 
 function initAuth(app, io) {
   app.use(sessionMiddleware);
-  io.engine.use(sessionMiddleware);
+  // io.engine.use(sessionMiddleware);
 }
 
 module.exports = { createApp };
