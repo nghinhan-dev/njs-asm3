@@ -17,7 +17,6 @@ const corsConfig = {
     "http://localhost:3000",
     "http://localhost:3001",
     "https://njs-asm3-1.onrender.com/",
-    "https://botique-fenk.onrender.com",
   ],
   credentials: true,
 };
