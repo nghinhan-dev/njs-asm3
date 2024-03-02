@@ -11,7 +11,7 @@ export const api = createApi({
     // GET cart
     getCart: builder.query({
       query: () => ({
-        url: "user/cart",
+        url: "/user/cart",
         credentials: "include",
       }),
       // eslint-disable-next-line no-unused-vars
