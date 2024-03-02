@@ -16,7 +16,7 @@ const corsConfig = {
   origin: [
     "http://localhost:3000",
     "http://localhost:3001",
-    "https://njs-asm3-1.onrender.com",
+    "https://njs-asm3-client.onrender.com",
   ],
   credentials: true,
 };
