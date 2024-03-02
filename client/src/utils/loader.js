@@ -1,7 +1,7 @@
 import { URI } from "../utils/url";
 
 export async function loader() {
-  const response = await fetch(`${URI}/product`, {
+  const response = await fetch(`${URI}product`, {
     credentials: "include",
   });
 
