@@ -32,6 +32,7 @@ async function createApp(httpServer) {
 function createExpressApp() {
   const app = express();
 
+  app.enable("trust proxy");
   app.use(bodyParser.json());
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, "client", "dist")));
