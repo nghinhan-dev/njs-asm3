@@ -1,4 +1,5 @@
 import { toastError } from "../util/toast";
+import { URI } from "../util/url";
 
 export async function login({ request }) {
   const formInput = Object.fromEntries(await request.formData());
@@ -12,7 +13,7 @@ export async function login({ request }) {
   }
 
   try {
-    const res = await fetch("http://localhost:5000/user/loginAdmin", {
+    const res = await fetch(`${URI}/loginAdmin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
