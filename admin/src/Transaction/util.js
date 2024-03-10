@@ -1,6 +1,8 @@
+import { URI } from "../util/url";
+
 export async function getTrans() {
   try {
-    const res = await fetch("http://localhost:5000/transactions");
+    const res = await fetch(`${URI}transactions`);
 
     if (!res.ok) {
       throw new Error(res.statusText);
@@ -14,7 +16,7 @@ export async function getTrans() {
 
 export async function getSpeicifcTrans({ params }) {
   const id = params.transID;
-  const res = fetch(`http://localhost:5000/transactions/${id}`);
+  const res = fetch(`${URI}transactions/${id}`);
 
   return res;
 }

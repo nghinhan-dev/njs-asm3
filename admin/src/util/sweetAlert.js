@@ -8,7 +8,7 @@ export function deleteInEditPage(name, value, url) {
     showCancelButton: true,
     preConfirm: async () => {
       try {
-        const response = await fetch(`http://localhost:5000/${url}/delete`, {
+        const response = await fetch(`${url}/delete`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
