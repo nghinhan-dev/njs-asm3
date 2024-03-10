@@ -11,7 +11,7 @@ import { useState } from "react";
 
 export default function CheckoutPage() {
   const { data, isLoading, isSuccess, isError, error } = useGetCartQuery();
-  const [postOrder] = usePostOrderMutation();
+  const [postOrder, { isLoading: isPosting }] = usePostOrderMutation();
   const [address, setAddress] = useState();
   const navigate = useNavigate();
 
@@ -124,6 +124,7 @@ export default function CheckoutPage() {
             <button
               onClick={() => onSubmitCheckout()}
               className="btn bg-black text-white"
+              disabled={isPosting}
             >
               Place Order
             </button>

@@ -18,7 +18,7 @@ export const api = createApi({
       providesTags: (result = [], error, arg) => {
         return [
           "Item",
-          ...result.items.map(({ id }) => ({ type: "Item", id: id })),
+          ...result.items.map(({ _id }) => ({ type: "Item", id: _id })),
         ];
       },
     }),
