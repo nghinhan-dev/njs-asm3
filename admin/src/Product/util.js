@@ -4,7 +4,7 @@ import { URI } from "../util/url";
 
 export async function getSinglePrd({ params }) {
   const id = params.prdId;
-  const res = fetch(`${URI + id}`);
+  const res = fetch(`${URI}/product/${id}`);
 
   console.log("res:", res);
   return res;
