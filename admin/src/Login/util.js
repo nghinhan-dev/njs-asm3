@@ -13,7 +13,7 @@ export async function login({ request }) {
   }
 
   try {
-    const res = await fetch(`${URI}/loginAdmin`, {
+    const res = await fetch(`${URI}/user/loginAdmin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
