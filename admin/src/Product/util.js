@@ -54,7 +54,7 @@ export async function updateProduct({ params, request }) {
   const data = Object.fromEntries(await request.formData());
 
   try {
-    const res = await fetch(`${URI}/${id}`, {
+    const res = await fetch(`${URI}/product/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
